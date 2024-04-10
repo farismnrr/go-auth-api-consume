@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"bufio"
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
@@ -10,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"strings"
 	"time"
 
 	"github.com/farismnrr/go-auth-api-consume/model"
@@ -56,4 +58,29 @@ func ReadJsonFile() (string, string) {
 	json.Unmarshal(authData, &auth)
 
 	return auth.Username, auth.PrivateKey
+}
+
+func ReadEnvFile(filename string) (map[string]string, error) {
+	envVars := make(map[string]string)
+
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		parts := strings.SplitN(line, "=", 2)
+		if len(parts) == 2 {
+			envVars[parts[0]] = parts[1]
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return envVars, nil
 }

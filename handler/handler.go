@@ -12,7 +12,14 @@ import (
 func GetDataFromAPI() (*model.ResponseData, error) {
 	_, authToken := helper.ReadJsonFile()
 
-	req, err := http.NewRequest("GET", "https://authorization-api-dot-farismnrr-gclouds.as.r.appspot.com/copyright", nil)
+	envVars, err := helper.ReadEnvFile(".env")
+	if err != nil {
+		return nil, fmt.Errorf("error: %v", err)
+	}
+
+	getCopyright := envVars["GET_COPYRIGHT"]
+
+	req, err := http.NewRequest("GET", getCopyright, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request: %v", err)
 	}
