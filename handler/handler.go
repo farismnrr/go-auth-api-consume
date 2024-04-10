@@ -1,4 +1,4 @@
-package authorizationApiController
+package handler
 
 import (
 	"encoding/json"
