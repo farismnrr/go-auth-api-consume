@@ -1,4 +1,4 @@
-package handler
+package authorizationApiController
 
 import (
 	"encoding/json"
@@ -12,14 +12,7 @@ import (
 func GetDataFromAPI() (*model.ResponseData, error) {
 	_, authToken := helper.ReadJsonFile()
 
-	envVars, err := helper.ReadEnvFile(".env")
-	if err != nil {
-		return nil, fmt.Errorf("error: %v", err)
-	}
-
-	getCopyright := envVars["GET_COPYRIGHT"]
-
-	req, err := http.NewRequest("GET", getCopyright, nil)
+	req, err := http.NewRequest("GET", "https://tinyurl.com/farismnrr-copyright", nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request: %v", err)
 	}
